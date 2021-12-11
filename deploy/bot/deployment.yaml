@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "deployment-id7141-bot"
+  namespace: "id7141"
+spec:
+  selector:
+    matchLabels:
+      app: "id7141-bot"
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: "id7141-bot"
+    spec:
+      containers:
+      - image: id7141/chatops:v1.0.2
+        imagePullPolicy: Always
+        name: "id7141-bot"
+        ports:
+          - containerPort: 8000
+        envFrom:
+          - secretRef:
+              name: id7141-common-envs

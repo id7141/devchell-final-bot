@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "deployment-id7141-app"
+  namespace: "id7141"
+spec:
+  selector:
+    matchLabels:
+      app: "id7141-app"
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: "id7141-app"
+    spec:
+      containers:
+      - image: id7141/test-application:latest
+        imagePullPolicy: Always
+        name: "id7141-app"
+        ports:
+        - containerPort: 3535

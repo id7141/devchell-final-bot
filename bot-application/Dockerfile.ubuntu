@@ -1,0 +1,28 @@
+FROM ubuntu:latest
+
+ENV DEBIAN_FRONTEND=noninteractive
+#RUN apt-get update &&  apt-get  upgrade
+
+RUN apt-get update \
+  && apt-get install -y python3-pip python3-dev curl software-properties-common \
+  && cd /usr/local/bin \
+  && ln -s /usr/bin/python3 python \
+  && pip3 --no-cache-dir install --upgrade pip \
+  && rm -rf /var/lib/apt/lists/*
+
+RUN dpkg --print-architecture
+
+RUN  curl -fsSL https://apt.releases.hashicorp.com/gpg |  apt-key add -
+RUN  apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com buster main"
+RUN  apt update &&  apt install terraform
+RUN terraform -v
+RUN ls -liha
+WORKDIR /app
+COPY freebsd.tf /app
+COPY requirements.txt /app
+RUN pip install -r requirements.txt
+
+COPY . /app
+
+EXPOSE 8000
+CMD ["python", "bot-core.py"]

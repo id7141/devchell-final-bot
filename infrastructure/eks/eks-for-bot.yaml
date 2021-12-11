@@ -1,0 +1,54 @@
+# spot-cluster.yaml
+
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: saas-spot
+  region: eu-central-1
+  version: "1.21"
+
+vpc:
+  #clusterEndpoints:
+  #  publicAccess: true
+  #  privateAccess: true
+  subnets:
+    private:
+      eu-central-1a: { id: subnet-08802f12d8a780cd2 }
+      eu-central-1b: { id: subnet-0a6cbc4a22bed75d3 }
+      eu-central-1c: { id: subnet-05307fcb2d63557c6 }
+
+nodeGroups:
+    - name: spot-node-group-1
+      privateNetworking: true
+      minSize: 3
+      maxSize: 60
+      desiredCapacity: 3
+      instancesDistribution:
+        instanceTypes: ["m5.large","m5d.large","m5a.large","m5ad.large","m5n.large","m5dn.large","c5ad.large","c5d.large"]
+        onDemandBaseCapacity: 0
+        onDemandPercentageAboveBaseCapacity: 20
+        spotAllocationStrategy: "capacity-optimized"
+        maxPrice: 0.06
+      labels:
+        lifecycle: Ec2Spot
+      iam:
+        withAddonPolicies:
+          autoScaler: true
+
+    - name: spot-node-group-2
+      privateNetworking: true
+      minSize: 3
+      maxSize: 60
+      desiredCapacity: 3
+      instancesDistribution:
+        instanceTypes: ["m5.large","m5d.large","m5a.large","m5ad.large","m5n.large","m5dn.large","c5ad.large","c5d.large"]
+        onDemandBaseCapacity: 0
+        onDemandPercentageAboveBaseCapacity: 20
+        spotAllocationStrategy: "capacity-optimized"
+        maxPrice: 0.06
+      labels:
+        lifecycle: Ec2Spot
+      iam:
+        withAddonPolicies:
+          autoScaler: true

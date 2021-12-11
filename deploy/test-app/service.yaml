@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: "service-id7141-app"
+  namespace: "id7141"
+spec:
+  ports:
+    - port: 80
+      targetPort: 3535
+      protocol: TCP
+  type: NodePort
+  selector:
+    app: "id7141-app"
